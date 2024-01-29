@@ -1,12 +1,12 @@
-using Fluid;
-using Fluid.Values;
+using GeneratorLib.Models;
 
 namespace GeneratorLib.CustomFilters.Filters;
 
 public class ParagraphFilter
 {
-    public static ValueTask<FluidValue> Paragraph(FluidValue input, FilterArguments arguments, TemplateContext context)
+    public static void Paragraph(TemplateLine templateLine, dynamic data)
     {
-        return new StringValue("\n\t" + input.ToStringValue());
+        templateLine.ResultValue = templateLine.Value.Replace(templateLine.MatchValue,
+            "\n\t" + templateLine.MatchValue);
     }
 }

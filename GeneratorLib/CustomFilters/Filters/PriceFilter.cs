@@ -1,12 +1,11 @@
-using Fluid;
-using Fluid.Values;
+using GeneratorLib.Models;
 
 namespace GeneratorLib.CustomFilters.Filters;
 
-public static class PriceFilter
+public class PriceFilter
 {
-    public static ValueTask<FluidValue> Price(FluidValue input, FilterArguments arguments, TemplateContext context)
+    public static void Price(TemplateLine templateLine, dynamic data)
     {
-        return new StringValue("$"+input.ToStringValue());
+        templateLine.ResultValue = templateLine.Value.Replace(templateLine.MatchValue, "$" + templateLine.MatchValue);
     }
 }
