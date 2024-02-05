@@ -35,26 +35,28 @@ public static class ValueParser
         if (templateLine == null)
             return;
 
+        foreach (var item in templateLine.Where(x => x.Type == TemplateLineType.Value))
+        {
+            dynamic val = data;
+
+            foreach (var prop in item.ValueProperties)
+                val = val[prop];
+
+            if (item.ValueFiltter != null)
+                CustomFilter.InvokeFilter(item, data);
+
+            item.ResultValue = item.ResultValue.Replace(item.MatchValue, val.ToString());
+        }
+    }
+
+    public static void SetDefault(IList<TemplateLine>? templateLine)
+    {
+        if (templateLine == null)
+            return;
+
         foreach (var item in templateLine)
         {
-            if (item.Type == TemplateLineType.Value)
-            {
-                dynamic val = data;
-
-                foreach (var prop in item.ValueProperties)
-                    val = val[prop];
-
-                if (item.ValueFiltter != null)
-                    CustomFilter.InvokeFilter(item, data);
-                else
-                    item.ResultValue = item.Value;
-
-                item.ResultValue = item.ResultValue.Replace(item.MatchValue, val.ToString());
-            }
-            else
-                item.ResultValue = item.Value;
-
-            item.ResultValue = string.Concat(new String(' ', item.CountIndentation), item.ResultValue);
+            item.ResultValue = item.Value;
         }
     }
 }

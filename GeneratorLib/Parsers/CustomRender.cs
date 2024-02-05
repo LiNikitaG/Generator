@@ -17,8 +17,14 @@ public static class CustomRender
 
     private static string RenderTextSpan(StateTemplate state, dynamic data)
     {
+        ValueParser.SetDefault(state.StartResult);
+        ValueParser.SetDefault(state.StartResult);
+        
         ValueParser.SetValue(state.StartResult, data);
         ValueParser.SetValue(state.EndResult, data);
+
+        AddIndentation(state.StartResult);
+        AddIndentation(state.EndResult);
 
         var startStr = string.Join("\r\n", state.StartResult.Select(x => x.ResultValue));
         var endStr = state.EndResult != null ? string.Join("\r\n", state.EndResult.Select(x => x.ResultValue)) : null;
@@ -35,5 +41,14 @@ public static class CustomRender
     {
         var render = Render;
         return StatementParser.Statements[state.StateType](state, data, render);
+    }
+    
+    private static void AddIndentation(IList<TemplateLine>? templateLine)
+    {
+        if(templateLine == null) return;
+        foreach (var item in templateLine)
+        {
+            item.ResultValue = string.Concat(new String(' ', item.CountIndentation), item.ResultValue);
+        }
     }
 }

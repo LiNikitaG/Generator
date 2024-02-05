@@ -37,7 +37,8 @@ public static class CustomParser
             {
                 Index = i,
                 CountIndentation = tempArr.Length - tempArr.TrimStart().Length,
-                Value = tempArr.Trim()
+                Value = tempArr.Trim(),
+                ResultValue = tempArr.Trim(),
             };
             SetType(newTemplateLine);
             templateLines.Add(newTemplateLine);
